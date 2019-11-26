@@ -8,8 +8,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wxy.jetpackdemo.R;
-import com.wxy.jetpackdemo.viewmodel.fragment.FragmentOne;
-import com.wxy.jetpackdemo.viewmodel.fragment.FragmentTwo;
+import com.wxy.jetpackdemo.viewmodel.fragment.VMFragmentOne;
+import com.wxy.jetpackdemo.viewmodel.fragment.VMFragmentTwo;
 import com.wxy.jetpackdemo.viewmodel.model.MyViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,10 +29,9 @@ public class ViewModelActivity extends AppCompatActivity {
     TextView btnOne;
     @BindView(R.id.btn_two)
     TextView btnTwo;
-    private FragmentOne fragmentOne;
-    private FragmentTwo fragmentTwo;
+    private VMFragmentOne VMFragmentOne;
+    private VMFragmentTwo VMFragmentTwo;
     private Fragment currentFragment=new Fragment();
-    private MutableLiveData<String> liveData = new MutableLiveData<>();
     private MyViewModel myViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,27 +42,19 @@ public class ViewModelActivity extends AppCompatActivity {
         myViewModel = ViewModelProviders.of(this,new MyViewModel.Factory("myViewModel")).get("myViewModel",MyViewModel.class);
         myViewModel.setName("ViewModelActivity");
         initFragment();
-        showFragment(fragmentOne);
-        liveData.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                if (s.equals("heihei")) {
-                    Toast.makeText(ViewModelActivity.this, "修改myViewModel的name为: " + myViewModel.getName(), Toast.LENGTH_SHORT).show();
-                }else if (s.equals("haha")){
-                    btnSend.setText(s);
-                }
-            }
-        });
+        showFragment(VMFragmentOne);
+
+
     }
 
     private void initFragment() {
-        fragmentOne = (FragmentOne) getSupportFragmentManager().findFragmentByTag(FragmentOne.class.getName());
-        if (fragmentOne == null) {
-            fragmentOne = new FragmentOne();
+        VMFragmentOne = (VMFragmentOne) getSupportFragmentManager().findFragmentByTag(VMFragmentOne.class.getName());
+        if (VMFragmentOne == null) {
+            VMFragmentOne = new VMFragmentOne();
         }
-        fragmentTwo = (FragmentTwo) getSupportFragmentManager().findFragmentByTag(FragmentTwo.class.getName());
-        if (fragmentTwo == null) {
-            fragmentTwo = new FragmentTwo();
+        VMFragmentTwo = (VMFragmentTwo) getSupportFragmentManager().findFragmentByTag(VMFragmentTwo.class.getName());
+        if (VMFragmentTwo == null) {
+            VMFragmentTwo = new VMFragmentTwo();
         }
     }
     private void showFragment(Fragment fragment) {
@@ -83,13 +74,12 @@ public class ViewModelActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.btn_send:
                 myViewModel.setName("ViewModelActivity: key=myViewModel");
-                liveData.postValue("heihei");
                 break;
             case R.id.btn_one:
-                showFragment(fragmentOne);
+                showFragment(VMFragmentOne);
                 break;
             case R.id.btn_two:
-                showFragment(fragmentTwo);
+                showFragment(VMFragmentTwo);
                 break;
         }
     }
@@ -100,10 +90,5 @@ public class ViewModelActivity extends AppCompatActivity {
         Log.v("ViewModelActivity ","onResume");
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        liveData.postValue("haha");
-        Log.v("ViewModelActivity ","onStop");
-    }
+
 }
