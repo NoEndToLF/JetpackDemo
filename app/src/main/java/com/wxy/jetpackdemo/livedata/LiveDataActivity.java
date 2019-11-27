@@ -39,10 +39,10 @@ public class LiveDataActivity extends AppCompatActivity {
         setContentView(R.layout.activity_live_data);
         ButterKnife.bind(this);
         liveDataViewModel = ViewModelProviders.of(this).get(LiveDataViewModel.class);
-        liveDataViewModel.getMutableLiveData().observe(this, new Observer<String>() {
+        liveDataViewModel.getMutableLiveData().observe(this, new Observer<LiveDataViewModel.NameModel>() {
             @Override
-            public void onChanged(String s) {
-                btnSend.setText(s);
+            public void onChanged(LiveDataViewModel.NameModel nameModel) {
+                btnSend.setText(nameModel.getName());
             }
         });
         initFragment();
@@ -74,7 +74,7 @@ public class LiveDataActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_send:
-                liveDataViewModel.setName("LiveDataActivity");
+                liveDataViewModel.setNameModel(new LiveDataViewModel.NameModel("我是LiveDataActivity"));
                 break;
             case R.id.btn_one:
                 showFragment(liveDataFragmentOne);

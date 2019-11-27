@@ -19,16 +19,17 @@ public class LiveDataFragmentOne extends BaseFragment {
     @Override
     public int getLayoutId() {
         liveDataViewModel = ViewModelProviders.of(getActivity()).get(LiveDataViewModel.class);
-        liveDataViewModel.getMutableLiveData().observe(this, new Observer<String>() {
+        liveDataViewModel.getMutableLiveData().observe(this, new Observer<LiveDataViewModel.NameModel>() {
             @Override
-            public void onChanged(String s) {
-                tvOne.setText(s);
+            public void onChanged(LiveDataViewModel.NameModel nameModel) {
+                tvOne.setText(nameModel.getName());
             }
         });
         return R.layout.fragment_livedata_one;
     }
     @OnClick(R.id.tv_one)
     public void onViewClicked() {
-        liveDataViewModel.setName("LiveDataFragmentOne");
+
+        liveDataViewModel.setNameModel(new LiveDataViewModel.NameModel("我是LiveDataFragmentOne"));
     }
 }
