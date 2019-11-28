@@ -14,7 +14,6 @@ public class Test implements LifecycleObserver {
         Log.v(TAG,"onCreate");
 
     }
-
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     public void onDestroy( LifecycleOwner owner) {
         Log.v(TAG,"onDestroy");
