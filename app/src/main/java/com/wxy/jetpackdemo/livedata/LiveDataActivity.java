@@ -9,8 +9,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.view.TouchDelegate;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -47,6 +50,20 @@ public class LiveDataActivity extends AppCompatActivity {
         });
         initFragment();
         showFragment(liveDataFragmentOne);
+        //扩大btnSend的点击范围
+        btnSend.post(new Runnable() {
+            @Override
+            public void run() {
+                Rect rect=new Rect();
+                btnSend.getHitRect(rect);
+                rect.right+=100;
+                rect.bottom+=100;
+                TouchDelegate touchDelegate=new TouchDelegate(rect,btnSend);
+                if (View.class.isInstance(btnSend.getParent())){
+                ((View)btnSend.getParent()).setTouchDelegate(touchDelegate);
+            }
+            }
+        });
     }
     private void initFragment() {
         liveDataFragmentOne = (LiveDataFragmentOne) getSupportFragmentManager().findFragmentByTag(LiveDataFragmentOne.class.getName());
